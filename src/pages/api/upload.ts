@@ -34,22 +34,6 @@ export default async function handler(
       } else {
         const file = req.file as MulterFile
         console.log(file.buffer);
-        upload.single('file')(req as unknown as Request, res as unknown as Response, (err: MulterError | any) => {
-          if (err) {
-            reject(err)
-          } else {
-            const file = req.file as MulterFile
-            console.log(file.buffer);
-            // const text = await imageRecognition(imagePath);
-            // const { titleSeason, pricesList } = parseTextAndGetRates(text, true);
-            // console.log({ titleSeason });
-            // const animals = groupPricesByTypeofAnimal(pricesList);
-            // console.log(JSON.stringify(animals));
-            // return animals;
-            res.status(200).json(file)
-            resolve()
-          }
-        })
         res.status(200).json(file)
         resolve()
       }
