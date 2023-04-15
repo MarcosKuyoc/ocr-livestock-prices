@@ -1,12 +1,19 @@
 import { useState, ChangeEvent } from 'react';
 import Image from 'next/image';
 import DataTable from './data-table';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { Rates } from './data-table.types';
 
-function ImageUploader() {
-  const [previewImage, setPreviewImage] = useState<string>('/formato.jpg');
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+const MySwal = withReactContent(Swal);
 
-  async function handleFileInputChange(event: ChangeEvent<HTMLInputElement>) {
+const ImageUploader = () => {
+  const previewNameImage = 'formato.jpg';
+  const [previewImage, setPreviewImage] = useState<string>(`/${previewNameImage}`);
+  const [nameImage, setNameImage] = useState<string>(`Fomato Actual`);
+  const [dataImage, setDataImage] = useState<Rates>({titleSeason: 'Debe cargar sus precios'});
+
+  const handleFileInputChange = async(event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -16,21 +23,46 @@ function ImageUploader() {
 
     reader.onloadend = () => {
       setPreviewImage(reader.result as string);
+      setNameImage(file.name);
     };
+  }
 
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      setUploadedImage(data.url);
+  const onParseImageToText = async () => {
+    const miInput = document.getElementById('input-upload-imagen') as HTMLInputElement;
+    const archivo = miInput.files![0];
+    
+    if (!archivo) {
+      MySwal.fire({
+        title: 'Estas seguro?',
+        text: "Quieres convertir la imagen 'Preview' o deseas cargar tu imagen?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Convertir'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Convirtiendo la imagen!',
+            'Espere unos minutos mientras convertimos la imagen',
+            'success'
+          )
+        }
+      });
     } else {
-      console.error(response.statusText);
+      const formData = new FormData();
+      formData.append('file', archivo);
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setDataImage(data);
+      } else {
+        console.error(response.statusText);
+      }
     }
   }
 
@@ -43,6 +75,7 @@ function ImageUploader() {
             <label className="block">
               <span className="sr-only">Cargar Imagen</span>
               <input
+                id='input-upload-imagen'
                 type="file"
                 accept="image/*"
                 onChange={handleFileInputChange}
@@ -54,32 +87,14 @@ function ImageUploader() {
                 hover:file:bg-violet-100" />
             </label>
           </div>
-          {
-            previewImage !== 'formato.jpg' && (
-              <div>
-                {
-                  uploadedImage ?
-                  (
-                    <div>
-                      <h1 className='text-center'>Imagen subida: 100%</h1>
-                      <Image src={uploadedImage} alt="Preview" width={400} height={300} />
-                    </div>
-                  )
-                  :
-                  ( 
-                    <div>
-                      <h1 className='text-center'>Preview: Formato Actual</h1>
-                      <Image className='max-h-screen' src={previewImage} alt="Preview" width={400} height={300} />
-                    </div>
-                  )
-                }
-              </div>
-            )
-          }
+          <div id='preview'>
+            <h1 className='text-center'>Preview: {nameImage}</h1>
+            <Image className='max-h-screen' src={previewImage} alt="Preview" width={400} height={300} />
+          </div>  
         </div>
       </div>
-      <div id='arrow' className='flex justify-center items-center w-1/6'>
-        <button className='flex justify-center item-center'>
+      <div id='parse-image' className='flex justify-center items-center w-1/6'>
+        <button className='flex justify-center item-center' onClick={onParseImageToText}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
           </svg>
@@ -89,7 +104,7 @@ function ImageUploader() {
       <div id='results' className='flex justify-center w-1/3
       p-4 shadow-lg bg-white rounded-xl
       '>
-        <DataTable />
+        <DataTable titleSeason={dataImage.titleSeason} />
       </div>
     </div>
   );

@@ -1,21 +1,8 @@
-type Category = {
-  name: string;
-  prices: {
-    min: string;
-    max: string;
-  };
-}
-type Animal = {
-  name: string;
-  category: Category[];
-}
+import { Rates } from "./data-table.types";
 
-type Rates = {
-  titleSeason?: string;
-  pricesList?: (string | null)[][];
-};
+const DataTable = (rates: Rates) => {
+  const {titleSeason, pricesList} = rates;
 
-const DataTable = ({titleSeason, pricesList}: Rates) => {
   if (titleSeason && pricesList) {
     return(
       <div className="prices-download">
@@ -58,7 +45,7 @@ const DataTable = ({titleSeason, pricesList}: Rates) => {
   return (
     <div id='prices-default' className="flex items-center">
       <p className="text-neutral-300 pb-2 text-xs text-center">
-        Debe cargar sus precios
+        {titleSeason}
       </p>
     </div>
   )

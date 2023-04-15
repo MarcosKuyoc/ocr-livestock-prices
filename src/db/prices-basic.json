@@ -1,0 +1,120 @@
+[
+  {
+    "name": "HEMBRAS",
+    "category": [
+      {
+        "name": "TERNERA HEMBRA",
+        "prices": {
+          "min": "55.00",
+          "max": "68.00"
+        }
+      },
+      {
+        "name": "DESTETE HEMBRA",
+        "prices": {
+          "min": "46.00",
+          "max": "53.50"
+        }
+      },
+      {
+        "name": "NOVILLONA SEMITERMINADA",
+        "prices": {
+          "min": "42.00",
+          "max": "47.50"
+        }
+      },
+      {
+        "name": "NOVILLONA TERMINADA",
+        "prices": {
+          "min": "36.00",
+          "max": "42.00"
+        }
+      },
+      {
+        "name": "VACA GORDA",
+        "prices": {
+          "min": "28.00",
+          "max": "34.50"
+        }
+      },
+      {
+        "name": "VACA REPASTO",
+        "prices": {
+          "min": "22.00",
+          "max": "33.50"
+        }
+      }
+    ]
+  },
+  {
+    "name": "MACHOS",
+    "category": [
+      {
+        "name": "TERNERA MACHO",
+        "prices": {
+          "min": "62.00",
+          "max": "80.00"
+        }
+      },
+      {
+        "name": "DESTETE MACHO",
+        "prices": {
+          "min": "53.00",
+          "max": "61.00"
+        }
+      },
+      {
+        "name": "TORO SEMITERMINADO",
+        "prices": {
+          "min": "44.00",
+          "max": "54.00"
+        }
+      },
+      {
+        "name": "TORO TERMINADO",
+        "prices": {
+          "min": "42.00",
+          "max": "51.00"
+        }
+      },
+      {
+        "name": "SEMENTAL DESCARTE",
+        "prices": {
+          "min": "25.00",
+          "max": "44.00"
+        }
+      }
+    ]
+  },
+  {
+    "name": "CARNEROS",
+    "category": [
+      {
+        "name": "MACHO",
+        "prices": {
+          "min": "20.00",
+          "max": "44.00"
+        }
+      },
+      {
+        "name": "HEMBRA",
+        "prices": {
+          "min": "12.00",
+          "max": "28.00"
+        }
+      }
+    ]
+  },
+  {
+    "name": "CABALLOS",
+    "category": [
+      {
+        "name": "MACHO",
+        "prices": {
+          "min": "5.00",
+          "max": "25.00"
+        }
+      }
+    ]
+  }
+]
