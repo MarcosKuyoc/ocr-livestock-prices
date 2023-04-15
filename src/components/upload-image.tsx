@@ -52,17 +52,39 @@ const ImageUploader = () => {
     } else {
       const formData = new FormData();
       formData.append('file', archivo);
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        setDataImage(data);
-      } else {
-        console.error(response.statusText);
-      }
+
+      MySwal.fire({
+        title: 'Por favor espera mientras convertimos su imagen...',
+        allowOutsideClick: false,
+        didOpen: async() => {
+          Swal.showLoading()
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            setDataImage(data);
+            Swal.hideLoading()
+            Swal.fire({
+              icon: 'success',
+              title: '¡Su precios fueron procesados!',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          } else {
+            console.error(response.statusText);
+            Swal.hideLoading()
+              Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: `Ocurrió un error: ${response.statusText}`,
+              })
+          }
+        },
+      })
     }
   }
 
@@ -70,7 +92,7 @@ const ImageUploader = () => {
     <div className='flex justify-center'>
       <div id='upload-image' className='flex w-1/3
           p-4 shadow-lg bg-white rounded-xl'>
-        <div>
+        <div className='m-auto'>
           <div id='select-file' className='p-2'>
             <label className="block">
               <span className="sr-only">Cargar Imagen</span>
@@ -104,7 +126,7 @@ const ImageUploader = () => {
       <div id='results' className='flex justify-center w-1/3
       p-4 shadow-lg bg-white rounded-xl
       '>
-        <DataTable titleSeason={dataImage.titleSeason} />
+        <DataTable titleSeason={dataImage.titleSeason} pricesList={dataImage.pricesList} />
       </div>
     </div>
   );

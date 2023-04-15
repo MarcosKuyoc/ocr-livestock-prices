@@ -13,5 +13,5 @@ export type Animal = {
 
 export type Rates = {
   titleSeason?: string;
-  pricesList?: (string | null)[][];
+  pricesList?: Animal[];
 };

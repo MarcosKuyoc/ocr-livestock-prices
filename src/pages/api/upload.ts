@@ -25,24 +25,25 @@ export const config = {
 
 export default async function handler(
   req: NextApiRequest & { file?: MulterFile },
-  res: NextApiResponse<MulterFile | MulterError>
+  res: NextApiResponse
 ): Promise<void> {
-  return new Promise((resolve, reject) => {
-    upload.single('file')(req as unknown as Request, res as unknown as Response, (err: MulterError | any) => {
-      if (err) {
-        reject(err)
-      } else {
-        const file = req.file as MulterFile
-        console.log(file.buffer);
-        res.status(200).json(file)
-        resolve()
-      }
-    })
-  })
+  try {
+    await upload.single('file')(req as unknown as Request, res as unknown as Response, async() => {
+      const file = req.file as MulterFile;
+      const imagePath = file.buffer;
+      const text = await imageRecognition(imagePath);
+      const { titleSeason, pricesList } = parseTextAndGetRates(text, false);
+      const animals = groupPricesByTypeofAnimal(pricesList!);
+      res.status(200).json({ titleSeason: titleSeason, pricesList: animals});
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Se produjo un error al procesar el archivo');
+  }
 }
 
 
-const imageRecognition = async (imagePath: string): Promise<string> => {
+const imageRecognition = async (imagePath: Buffer): Promise<string> => {
   try {
     const { data: { text } } = await Tesseract.recognize(imagePath, 'spa');
     return text;
@@ -53,7 +54,7 @@ const imageRecognition = async (imagePath: string): Promise<string> => {
   }
 };
 
-const parseTextAndGetRates = (text: string, isNewImageFormat: boolean): Rates => {
+const parseTextAndGetRates = (text: string, isNewImageFormat: boolean): {titleSeason: string, pricesList: (string | null)[][]} => {
   try {
     const linesOfText: string[] = text.split('\n');
     let rows: number = 0;
