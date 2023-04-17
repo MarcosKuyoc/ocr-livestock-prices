@@ -15,9 +15,11 @@ yarn dev
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver los resulados.
 
-## Preview
+## Aplicación
 
--
+![Aplicación: extrae información de precios de una imagen](https://ocr-livestock-prices.vercel.app/_next/image?url=%2Fpreview.png&w=640&q=75)
+
+
 
 ## Deploy con Vercel
 - https://ocr-livestock-prices.vercel.app
