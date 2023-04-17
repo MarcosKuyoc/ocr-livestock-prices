@@ -20,7 +20,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver los
 -
 
 ## Deploy con Vercel
-- 
+- https://ocr-livestock-prices.vercel.app
 
 ## Author
 LCC. Marcos kuyoc
