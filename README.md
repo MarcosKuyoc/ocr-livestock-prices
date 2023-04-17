@@ -19,6 +19,10 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver los
 
 ![Aplicación: extrae información de precios de una imagen](https://ocr-livestock-prices.vercel.app/preview.png)
 
+![Aplicación: extrae información de precios de una imagen](https://ocr-livestock-prices.vercel.app/preview_loading.png)
+
+![Aplicación: extrae información de precios de una imagen](https://ocr-livestock-prices.vercel.app/preview_result.png)
+
 
 
 ## Deploy con Vercel
